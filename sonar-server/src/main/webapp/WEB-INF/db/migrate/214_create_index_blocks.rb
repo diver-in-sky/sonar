@@ -25,11 +25,11 @@ class CreateIndexBlocks < ActiveRecord::Migration
 
   def self.up
     create_table :index_blocks do |t|
-      t.column :resource_id,        :string,  :null => false, :limit => 400
-      t.column :block_hash,         :string,  :null => false, :limit => 50
-      t.column :start_line,         :integer, :null => false
-      t.column :end_line,           :integer, :null => false
-      t.column :index_in_file,      :integer, :null => false
+      t.column :resource_id,        :string,  :null => true, :limit => 400
+      t.column :block_hash,         :string,  :null => true, :limit => 50
+      t.column :start_line,         :integer, :null => true
+      t.column :end_line,           :integer, :null => true
+      t.column :index_in_file,      :integer, :null => true
     end
 
     add_index :index_blocks, [:resource_id], :name => 'index_blocks_resource'

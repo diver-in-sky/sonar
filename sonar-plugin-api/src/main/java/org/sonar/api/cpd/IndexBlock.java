@@ -33,19 +33,19 @@ public class IndexBlock {
   @GeneratedValue
   private Integer id;
 
-  @Column(name = "resource_id", updatable = false, nullable = false, length = RESOURCE_ID_SIZE)
+  @Column(name = "resource_id", updatable = true, nullable = true, length = RESOURCE_ID_SIZE)
   private String resourceId;
 
-  @Column(name = "block_hash", updatable = false, nullable = false, length = BLOCK_HASH_SIZE)
+  @Column(name = "block_hash", updatable = true, nullable = true, length = BLOCK_HASH_SIZE)
   private String blockHash;
 
-  @Column(name = "index_in_file", updatable = false, nullable = false)
+  @Column(name = "index_in_file", updatable = true, nullable = true)
   private Integer indexInFile;
 
-  @Column(name = "start_line", updatable = false, nullable = false)
+  @Column(name = "start_line", updatable = true, nullable = true)
   private Integer startLine;
 
-  @Column(name = "end_line", updatable = false, nullable = false)
+  @Column(name = "end_line", updatable = true, nullable = true)
   private Integer endLine;
 
   /**
