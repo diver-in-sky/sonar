@@ -19,9 +19,7 @@
  */
 package org.sonar.api.cpd;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity(name = "IndexBlock")
 @Table(name = "index_blocks")
@@ -29,6 +27,11 @@ public class IndexBlock {
 
   public static final int RESOURCE_ID_SIZE = 400;
   public static final int BLOCK_HASH_SIZE = 50;
+
+  @Id
+  @Column(name = "id")
+  @GeneratedValue
+  private Integer id;
 
   @Column(name = "resource_id", updatable = false, nullable = false, length = RESOURCE_ID_SIZE)
   private String resourceId;
@@ -68,23 +71,51 @@ public class IndexBlock {
     this.endLine = endLine;
   }
 
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
   public String getResourceId() {
     return resourceId;
+  }
+
+  public void setResourceId(String resourceId) {
+    this.resourceId = resourceId;
   }
 
   public String getBlockHash() {
     return blockHash;
   }
 
+  public void setBlockHash(String blockHash) {
+    this.blockHash = blockHash;
+  }
+
   public Integer getIndexInFile() {
     return indexInFile;
+  }
+
+  public void setIndexInFile(Integer indexInFile) {
+    this.indexInFile = indexInFile;
   }
 
   public Integer getStartLine() {
     return startLine;
   }
 
+  public void setStartLine(Integer startLine) {
+    this.startLine = startLine;
+  }
+
   public Integer getEndLine() {
     return endLine;
+  }
+
+  public void setEndLine(Integer endLine) {
+    this.endLine = endLine;
   }
 }
