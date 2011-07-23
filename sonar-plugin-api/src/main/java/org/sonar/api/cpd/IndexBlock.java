@@ -19,7 +19,10 @@
  */
 package org.sonar.api.cpd;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity(name = "IndexBlock")
 @Table(name = "index_blocks")
@@ -27,6 +30,7 @@ public class IndexBlock {
 
   public static final int RESOURCE_ID_SIZE = 400;
   public static final int BLOCK_HASH_SIZE = 50;
+  public static final int CLONE_GROUP_SIZE = 50;
 
   @Id
   @Column(name = "id")
@@ -39,6 +43,9 @@ public class IndexBlock {
   @Column(name = "block_hash", updatable = true, nullable = true, length = BLOCK_HASH_SIZE)
   private String blockHash;
 
+  @Column(name = "clone_group", updatable = true, nullable = true, length = CLONE_GROUP_SIZE)
+  private String cloneGroup;
+
   @Column(name = "index_in_file", updatable = true, nullable = true)
   private Integer indexInFile;
 
@@ -47,6 +54,12 @@ public class IndexBlock {
 
   @Column(name = "end_line", updatable = true, nullable = true)
   private Integer endLine;
+
+  @Column(name = "created_at", updatable = true, nullable = true)
+  private Date createdAt;
+
+  @Column(name = "updated_at", updatable = true, nullable = true)
+  private Date updatedAt;
 
   /**
    * Default constructor
@@ -95,6 +108,14 @@ public class IndexBlock {
     this.blockHash = blockHash;
   }
 
+  public String getCloneGroup() {
+    return cloneGroup;
+  }
+
+  public void setCloneGroup(String cloneGroup) {
+    this.cloneGroup = cloneGroup;
+  }
+
   public Integer getIndexInFile() {
     return indexInFile;
   }
@@ -117,5 +138,33 @@ public class IndexBlock {
 
   public void setEndLine(Integer endLine) {
     this.endLine = endLine;
+  }
+
+  public Date getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(Date createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public Date getUpdatedAt() {
+    return updatedAt;
+  }
+
+  public void setUpdatedAt(Date updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this)
+        .append("resource", resourceId)
+        .append("hash", blockHash)
+        .append("group", cloneGroup)
+        .append("start", startLine)
+        .append("end", endLine)
+        .append("index_in_file", indexInFile)
+        .toString();
   }
 }
