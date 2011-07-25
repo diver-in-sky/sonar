@@ -102,7 +102,19 @@ public class CpdAnalyser {
     protected double duplicatedBlocks = 0;
     protected Resource resource;
     private SensorContext context;
-    private List<StringBuilder> duplicationXMLEntries = new ArrayList<StringBuilder>();
+    private List<XmlEntry> duplicationXMLEntries = new ArrayList<XmlEntry>();
+
+    private static final class XmlEntry {
+      protected StringBuilder xml;
+      protected int startLine;
+      protected int lines;
+
+      private XmlEntry(int startLine, int lines, StringBuilder xml) {
+        this.xml = xml;
+        this.startLine = startLine;
+        this.lines = lines;
+      }
+    }
 
     private DuplicationsData(Resource resource, SensorContext context) {
       this.context = context;
@@ -115,7 +127,7 @@ public class CpdAnalyser {
           .append("\" target-start=\"").append(targetDuplicationStartLine).append("\" target-resource=\"")
           .append(context.saveResource(targetResource)).append("\"/>");
 
-      duplicationXMLEntries.add(xml);
+      duplicationXMLEntries.add(new XmlEntry(duplicationStartLine, duplicatedLines, xml));
 
       for (int duplicatedLine = duplicationStartLine; duplicatedLine < duplicationStartLine + duplicatedLines; duplicatedLine++) {
         this.duplicatedLines.add(duplicatedLine);
@@ -135,8 +147,19 @@ public class CpdAnalyser {
 
     private String getDuplicationXMLData() {
       StringBuilder duplicationXML = new StringBuilder("<duplications>");
-      for (StringBuilder xmlEntry : duplicationXMLEntries) {
-        duplicationXML.append(xmlEntry);
+
+      Comparator<XmlEntry> comp = new Comparator<XmlEntry>() {
+        public int compare(XmlEntry o1, XmlEntry o2) {
+          if (o1.startLine == o2.startLine) {
+            return o2.lines - o1.lines;
+          }
+          return o1.startLine - o2.startLine;
+        }
+      };
+      Collections.sort(duplicationXMLEntries, comp);
+
+      for (XmlEntry xmlEntry : duplicationXMLEntries) {
+        duplicationXML.append(xmlEntry.xml);
       }
       duplicationXML.append("</duplications>");
       return duplicationXML.toString();
